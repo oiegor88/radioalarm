@@ -1,0 +1,13 @@
+radio:
+  playback:
+    scheduled:
+      - name: "Radio Polska 24"
+        source: 'http://mp3.polskieradio.pl:8080/'
+        cron: '0 * * * * *'
+        duration: 'PT20s'
+        enabled: false
+      - name: "Radio Caprice"
+        source: 'http://79.120.77.11:8002/blackdoom'
+        cron: '54 * * * * *'
+        duration: 'PT5m'
+        enabled: true
