@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
 
@@ -15,18 +15,18 @@ public class ScheduledPlaybackPlanner implements ApplicationRunner {
 
     private final RadioPlaybackProperties playbackProperties;
     private final MediaPlayerController mediaPlayerController;
-    private final TaskScheduler taskScheduler;
-
+    private final ThreadPoolTaskScheduler taskScheduler;
 
     public void run(ApplicationArguments args) {
         playbackProperties.scheduled().stream()
                 .filter(ScheduledPlaybackInfo::enabled)
-                .forEach(info -> {
-                    log.info("Planning playback {}", info);
-                    taskScheduler.schedule(
-                            new ScheduledPlayback(info, mediaPlayerController),
-                            new CronTrigger(info.cron())
-                    );
-                });
+                .forEach(this::planTask);
+    }
+
+    private void planTask(ScheduledPlaybackInfo playbackInfo) {
+        log.info("Planning playback {}", playbackInfo);
+        var playbackTask = new ScheduledPlaybackTask(playbackInfo, mediaPlayerController);
+        var playbackTrigger = new CronTrigger(playbackInfo.cron());
+        taskScheduler.schedule(playbackTask, playbackTrigger);
     }
 }
