@@ -16,9 +16,10 @@
     </parent>
 
     <properties>
-        <maven.compiler.source>22</maven.compiler.source>
-        <maven.compiler.target>22</maven.compiler.target>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <vlcj.version>4.8.3</vlcj.version>
     </properties>
 
     <build>
@@ -53,7 +54,7 @@
         <dependency>
             <groupId>uk.co.caprica</groupId>
             <artifactId>vlcj</artifactId>
-            <version>4.8.3</version>
+            <version>${vlcj.version}</version>
         </dependency>
     </dependencies>
 

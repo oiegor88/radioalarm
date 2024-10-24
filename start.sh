@@ -1,3 +1,5 @@
 #!/bin/bash
 
-/home/olek/.sdkman/candidates/java/22.0.2-zulu/bin/java -jar /opt/radioalarm/radioalarm.jar 
+export JAVA_HOME=${SDKMAN_CANDIDATES_DIR}/java/${CURRENT}
+
+java -jar /opt/radioalarm/radioalarm.jar

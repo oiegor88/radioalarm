@@ -1,0 +1,13 @@
+radio:
+  playback:
+    scheduled:
+      - name: "Radio Polska 24"
+        source: 'http://mp3.polskieradio.pl:8080/'
+        cron: '0 0 10 * * *'
+        duration: 'PT20m'
+        enabled: true
+      - name: "Radio Polska 24"
+        source: 'http://mp3.polskieradio.pl:8080/'
+        cron: '0 0 20 * * *'
+        duration: 'PT20m'
+        enabled: false
