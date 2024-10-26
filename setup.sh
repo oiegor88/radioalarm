@@ -1,6 +1,10 @@
 #!/bin/bash
 
 DEPLOYMENT_DIR="/opt/radioalarm"
+APP_NAME="radioalarm"
+CONFIG_FILE="application.yml"
+START_SCRIPT_FILE="start.sh"
+STOP_SCRIPT_FILE="stop.sh"
 SERVICE_NAME="radioalarm.service"
 JDK_ALIAS="22.0.2-zulu"
 MVN_ALIAS="3.9.9"
@@ -24,7 +28,7 @@ function build() {
     # Update JDK path 
     JAVA_HOME="$SDKMAN_CANDIDATES_DIR/java/$JDK_ALIAS"
     # Build app 
-    mvn clean install
+    mvn clean install -Dbuild.finalName="$APP_NAME"
 }
 
 function writeline() {
@@ -35,24 +39,22 @@ function writeline() {
 
 function deploy() {
     echo "Deploying the project..."
-    # Modify permissions
-    chmod +x ./start.sh
-    chmod +x ./stop.sh
+
     # Copy stuff to /opt
     sudo mkdir -p "$DEPLOYMENT_DIR"
-    sudo cp -rf ./application.yml "$DEPLOYMENT_DIR/application.yml"
-    sudo cp -rf ./target/radioalarm.jar "$DEPLOYMENT_DIR/radioalarm.jar"
+    sudo cp -rf "./$CONFIG_FILE" "$DEPLOYMENT_DIR/$CONFIG_FILE"
+    sudo cp -rf "./target/$APP_NAME.jar" "$DEPLOYMENT_DIR/$APP_NAME.jar"
     
     # Create scripts
-    START_SCRIPT="$DEPLOYMENT_DIR/start.sh"
+    START_SCRIPT="$DEPLOYMENT_DIR/$START_SCRIPT_FILE"
     sudo truncate -s 0 "$START_SCRIPT" 
     writeline "#!/bin/bash" "$START_SCRIPT"
-    writeline "$SDKMAN_CANDIDATES_DIR/java/$JDK_ALIAS/bin/java -jar /opt/radioalarm/radioalarm.jar" "$START_SCRIPT"
+    writeline "$SDKMAN_CANDIDATES_DIR/java/$JDK_ALIAS/bin/java -jar $DEPLOYMENT_DIR/$APP_NAME.jar" "$START_SCRIPT"
     
-    STOP_SCRIPT="$DEPLOYMENT_DIR/stop.sh"
+    STOP_SCRIPT="$DEPLOYMENT_DIR/$STOP_SCRIPT_FILE"
     sudo truncate -s 0 "$STOP_SCRIPT" 
     writeline "#!/bin/bash" "$STOP_SCRIPT"
-    writeline "pkill -f radioalarm.jar*" "$STOP_SCRIPT"
+    writeline "pkill -f $APP_NAME.jar*" "$STOP_SCRIPT"
     
     # Update service
     UNITFILE="/etc/systemd/system/$SERVICE_NAME"
@@ -68,9 +70,9 @@ function deploy() {
     writeline "RestartSec=1" "$UNITFILE"
     writeline "User=$CURRENT_USER" "$UNITFILE"
     writeline "Environment=PULSE_RUNTIME_PATH=/run/user/$CURRENT_UID/pulse/" "$UNITFILE"
-    writeline "WorkingDirectory=/opt/radioalarm" "$UNITFILE"
-    writeline "ExecStart=/bin/bash start.sh" "$UNITFILE"
-    writeline "ExecStop=/bin/bash stop.sh" "$UNITFILE"
+    writeline "WorkingDirectory=$DEPLOYMENT_DIR" "$UNITFILE"
+    writeline "ExecStart=/bin/bash $START_SCRIPT_FILE" "$UNITFILE"
+    writeline "ExecStop=/bin/bash $STOP_SCRIPT_FILE" "$UNITFILE"
     writeline "" "$UNITFILE"
     writeline "[Install]" "$UNITFILE"
     writeline "WantedBy=multi-user.target" "$UNITFILE"
