@@ -6,7 +6,16 @@ module.exports = {
       "./index.html"
   ],
   theme: {
-    extend: {},
+    extend: {
+        fontFamily: {
+            sans: ['Fira Sans', 'sans-serif'],
+        },
+        colors: {
+            red: "#dc2626",
+            grey: "#94a3b8",
+            blue: "#3b82f6"
+        }
+    },
   },
   plugins: []
 }
