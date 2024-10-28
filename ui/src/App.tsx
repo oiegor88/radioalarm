@@ -8,6 +8,8 @@ function App() {
       <>
           <div className="py-10 px-40">
               <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
+              <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
+              <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
               <PlaybackRecord name={'Radio caprice'} cron={'* */2 * * * *'} status={PlaybackStatus.INACTIVE}/>
           </div>
       </>

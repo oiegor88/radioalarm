@@ -15,21 +15,21 @@ interface PlaybackRecordProps {
 
 const PlaybackRecord: React.FC<PlaybackRecordProps> = ({ name, cron, status }) => (
 
-    <div className={classNames("flex items-center", {
-        'bg-gray-300 text-gray-500': status === PlaybackStatus.INACTIVE,
+    <div className={classNames("flex flex-row items-center border-b border-b-gray-100", {
+        'bg-gray-100 text-gray-500': status === PlaybackStatus.INACTIVE,
         'bg-white': status === PlaybackStatus.ACTIVE
     })}>
         <div className="p-4 w-1/12">
             <PlaybackStatusIcon status={status}/>
         </div>
-        <div className="p-4 w-2/3">
+        <div className="p-4 w-5/12">
             <h1>{name}</h1>
         </div>
-        <div className="p-4 w-full">
+        <div className="p-4 w-4/12">
             <p>Schedule: {cron}</p>
         </div>
-        <div className="p-4 w-4/12 text-left">
-            <div className="flex items-center">
+        <div className="p-4 w-2/12 ">
+            <div>
                 { status === PlaybackStatus.ACTIVE
                     && <Button label="Disable" color="bg-grey"/>
                 }
