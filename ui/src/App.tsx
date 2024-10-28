@@ -6,6 +6,14 @@ function App() {
 
   return (
       <>
+          {/* Header */}
+          {/* Playback Create Form + Button */}
+          {/* Validation */}
+          {/* Error handling + bar */}
+          {/* Axios */}
+          {/* Record identification */}
+          {/* Table component */}
+
           <div className="py-10 px-40">
               <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
               <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
