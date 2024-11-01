@@ -87,10 +87,14 @@ public class PlaybackService {
   }
 
   public void startPlayback(@NonNull UUID refId) {
-    throw new UnsupportedOperationException();
+    playbackRepository.findOne(refId)
+        .map(playbackMapper::fromEntity)
+        .ifPresent(playbackTaskManager::initiate);
   }
 
   public void stopPlayback(@NonNull UUID refId) {
-    throw new UnsupportedOperationException();
+    playbackRepository.findOne(refId)
+        .map(playbackMapper::fromEntity)
+        .ifPresent(playbackTaskManager::cancel);
   }
 }
