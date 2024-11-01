@@ -1,6 +1,6 @@
 package io.radioalarm.api;
 
-import io.radioalarm.model.PlaybackModel;
+import io.radioalarm.domain.Playback;
 import io.radioalarm.service.PlaybackService;
 import java.util.List;
 import java.util.UUID;
@@ -25,25 +25,25 @@ public class PlaybackController {
   private final PlaybackService playbackService;
 
   @GetMapping
-  public List<PlaybackModel> getPlaybacks() {
+  public List<Playback> getPlaybacks() {
     return playbackService.getPlaybacks();
   }
 
   @GetMapping("/{ref_id}")
-  public PlaybackModel getPlayback(@PathVariable(name = "ref_id") UUID refId) {
+  public Playback getPlayback(@PathVariable(name = "ref_id") UUID refId) {
     return playbackService.getPlayback(refId);
   }
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public PlaybackModel createPlayback(@RequestBody PlaybackCreateRequest request) {
+  public Playback createPlayback(@RequestBody PlaybackCreateRequest request) {
     return playbackService.createPlayback(request);
   }
 
   @PutMapping("/{ref_id}")
   @ResponseStatus(HttpStatus.ACCEPTED)
-  public PlaybackModel updatePlayback(@PathVariable(name = "ref_id") UUID refId,
-                                      @RequestBody PlaybackUpdateRequest request) {
+  public Playback updatePlayback(@PathVariable(name = "ref_id") UUID refId,
+                                 @RequestBody PlaybackUpdateRequest request) {
     return playbackService.updatePlayback(refId, request);
   }
 

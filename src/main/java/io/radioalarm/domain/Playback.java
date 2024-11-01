@@ -1,4 +1,4 @@
-package io.radioalarm.model;
+package io.radioalarm.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 @Data
 @Accessors(chain = true)
-public class PlaybackModel {
+public class Playback {
 
   @JsonProperty(value = "ref_id")
   private UUID refId;

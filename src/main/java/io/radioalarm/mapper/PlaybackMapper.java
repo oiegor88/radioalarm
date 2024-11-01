@@ -1,7 +1,7 @@
 package io.radioalarm.mapper;
 
 import io.radioalarm.data.PlaybackEntity;
-import io.radioalarm.model.PlaybackModel;
+import io.radioalarm.domain.Playback;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -14,7 +14,7 @@ public interface PlaybackMapper {
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "source", target = "source")
   @Mapping(source = "refId", target = "refId")
-  PlaybackModel toModel(PlaybackEntity entity);
+  Playback fromEntity(PlaybackEntity entity);
 
   @Mapping(source = "name", target = "name")
   @Mapping(source = "cron", target = "cron")
@@ -22,5 +22,5 @@ public interface PlaybackMapper {
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "source", target = "source")
   @Mapping(ignore = true, target = "refId")
-  PlaybackEntity toEntity(PlaybackModel model);
+  PlaybackEntity toEntity(Playback model);
 }
