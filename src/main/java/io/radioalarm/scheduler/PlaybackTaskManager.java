@@ -19,21 +19,20 @@ public class PlaybackTaskManager {
   private final PlaybackTaskRegistry playbackTaskRegistry;
   private final ThreadPoolTaskScheduler taskScheduler;
 
-  // TODO: fetch all enabled and schedule at startup
   public void schedule(Playback playback) {
-    log.info("Scheduling playback {}", playback.getName());
-    cancel(playback);
+    log.info("Scheduling playback {}", playback);
+    tryCancel(playback);
     var trigger = new CronTrigger(playback.getCron());
     var playbackTask = new PlaybackTask(playback, mediaPlayerController);
     var scheduledPlayback = taskScheduler.schedule(playbackTask, trigger);
     playbackTaskRegistry.register(playback.getId(), scheduledPlayback);
   }
 
-  public void cancel(Playback playback) {
-    cancel(playback.getId());
+  public void tryCancel(Playback playback) {
+    tryCancel(playback.getId());
   }
 
-  public void cancel(UUID playbackId) {
+  public void tryCancel(UUID playbackId) {
     playbackTaskRegistry.getTask(playbackId)
         .ifPresent(task -> task.cancel(true));
   }

@@ -23,16 +23,16 @@ public class PlaybackEventListener {
 
   @EventListener
   public void onPlaybackDeleted(PlaybackDeleted event) {
-    playbackTaskManager.cancel(event.getId());
+    playbackTaskManager.tryCancel(event.getId());
   }
 
   @EventListener
   public void onPlaybackDisabled(PlaybackDisabled event) {
-    playbackTaskManager.cancel(event.getPlayback());
+    playbackTaskManager.tryCancel(event.getPlayback());
   }
 
   @EventListener
-  public void onPlaybackDeleted(PlaybackEnabled event) {
+  public void onPlaybackEnabled(PlaybackEnabled event) {
     playbackTaskManager.schedule(event.getPlayback());
   }
 

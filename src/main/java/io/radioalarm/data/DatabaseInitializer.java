@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
+@Deprecated
 public class DatabaseInitializer implements ApplicationRunner {
 
   private final ObjectRepository<PlaybackEntity> nitriteRepository;
@@ -18,7 +19,7 @@ public class DatabaseInitializer implements ApplicationRunner {
   @Override
   public void run(ApplicationArguments args) throws Exception {
     var radio1 = new PlaybackEntity();
-    radio1.setRefId(UUID.randomUUID());
+    radio1.setId(UUID.randomUUID());
     radio1.setName("Radio Polska 24");
     radio1.setCron("0 0 10 * * *");
     radio1.setDuration(Duration.ofMinutes(1));
@@ -27,7 +28,7 @@ public class DatabaseInitializer implements ApplicationRunner {
     nitriteRepository.insert(radio1);
 
     var radio2 = new PlaybackEntity();
-    radio2.setRefId(UUID.randomUUID());
+    radio2.setId(UUID.randomUUID());
     radio2.setName("Radio Caprice");
     radio2.setCron("0 10 12 * * *");
     radio2.setDuration(Duration.ofHours(1).plus(Duration.ofMinutes(30)));

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Data
 @Accessors(chain = true)
-@Index(fields = "refId")
+@Index(fields = "id")
 @Entity(value = "playback")
 public class PlaybackEntity {
 
