@@ -13,7 +13,7 @@ public interface PlaybackMapper {
   @Mapping(source = "duration", target = "duration")
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "source", target = "source")
-  @Mapping(source = "refId", target = "refId")
+  @Mapping(source = "id", target = "id")
   Playback fromEntity(PlaybackEntity entity);
 
   @Mapping(source = "name", target = "name")
@@ -21,6 +21,6 @@ public interface PlaybackMapper {
   @Mapping(source = "duration", target = "duration")
   @Mapping(source = "enabled", target = "enabled")
   @Mapping(source = "source", target = "source")
-  @Mapping(ignore = true, target = "refId")
+  @Mapping(ignore = true, target = "id")
   PlaybackEntity toEntity(Playback model);
 }

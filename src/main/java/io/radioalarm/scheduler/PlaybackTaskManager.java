@@ -1,11 +1,11 @@
-package io.radioalarm.player;
+package io.radioalarm.scheduler;
 
 import io.radioalarm.domain.Playback;
-import jakarta.annotation.PreDestroy;
-import java.time.Instant;
+import io.radioalarm.player.MediaPlayerController;
+import io.radioalarm.player.PlaybackTask;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.Trigger;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.support.CronTrigger;
 import org.springframework.stereotype.Component;
@@ -19,31 +19,22 @@ public class PlaybackTaskManager {
   private final PlaybackTaskRegistry playbackTaskRegistry;
   private final ThreadPoolTaskScheduler taskScheduler;
 
-  @PreDestroy
-  public void destroy() {
-    playbackTaskRegistry.getTasks()
-        .forEach(task -> task.cancel(true));
-  }
-
-  // TODO: run on app startup
+  // TODO: fetch all enabled and schedule at startup
   public void schedule(Playback playback) {
-    plan(playback, new CronTrigger(playback.getCron()));
-  }
-
-  public void initiate(Playback playback) {
-    plan(playback, triggerContext -> Instant.now());
-  }
-
-  private void plan(Playback playback, Trigger trigger) {
-    log.info("Planning playback {}", playback.getName());
+    log.info("Scheduling playback {}", playback.getName());
     cancel(playback);
+    var trigger = new CronTrigger(playback.getCron());
     var playbackTask = new PlaybackTask(playback, mediaPlayerController);
     var scheduledPlayback = taskScheduler.schedule(playbackTask, trigger);
-    playbackTaskRegistry.register(playback.getRefId(), scheduledPlayback);
+    playbackTaskRegistry.register(playback.getId(), scheduledPlayback);
   }
 
   public void cancel(Playback playback) {
-    playbackTaskRegistry.getTask(playback.getRefId())
+    cancel(playback.getId());
+  }
+
+  public void cancel(UUID playbackId) {
+    playbackTaskRegistry.getTask(playbackId)
         .ifPresent(task -> task.cancel(true));
   }
 }

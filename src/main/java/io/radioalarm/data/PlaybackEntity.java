@@ -17,7 +17,7 @@ import java.util.UUID;
 public class PlaybackEntity {
 
   @Id
-  private UUID refId;
+  private UUID id;
 
   private Boolean enabled;
 

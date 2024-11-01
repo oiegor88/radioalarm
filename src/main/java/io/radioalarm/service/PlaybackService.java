@@ -4,10 +4,15 @@ import io.radioalarm.api.PlaybackCreateRequest;
 import io.radioalarm.api.PlaybackUpdateRequest;
 import io.radioalarm.data.PlaybackRepository;
 import io.radioalarm.domain.Playback;
+import io.radioalarm.events.PlaybackCreated;
+import io.radioalarm.events.PlaybackDeleted;
+import io.radioalarm.events.PlaybackDisabled;
+import io.radioalarm.events.PlaybackEnabled;
+import io.radioalarm.events.PlaybackUpdated;
 import io.radioalarm.exception.PlaybackNotFound;
 import io.radioalarm.mapper.PlaybackMapper;
-import io.radioalarm.player.PlaybackTaskManager;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +22,7 @@ import java.util.UUID;
 @Service
 @RequiredArgsConstructor
 public class PlaybackService {
-
-  private final PlaybackTaskManager playbackTaskManager;
+  private final ApplicationEventPublisher eventPublisher;
   private final PlaybackRepository playbackRepository;
   private final PlaybackMapper playbackMapper;
 
@@ -35,21 +39,19 @@ public class PlaybackService {
   }
 
   public Playback createPlayback(@NonNull PlaybackCreateRequest request) {
-    var model = new Playback()
-        .setName(request.getName())
-        .setCron(request.getCron())
-        .setDuration(request.getDuration())
-        .setSource(request.getSource())
-        .setEnabled(true);
-
-
-    playbackTaskManager.schedule(model);
-
-    return playbackMapper.fromEntity(
+    var playback = playbackMapper.fromEntity(
         playbackRepository.save(
-            playbackMapper.toEntity(model)
+            playbackMapper.toEntity(new Playback()
+                .setName(request.getName())
+                .setCron(request.getCron())
+                .setDuration(request.getDuration())
+                .setSource(request.getSource())
+                .setEnabled(true)
+            )
         )
     );
+    eventPublisher.publishEvent(new PlaybackCreated(this, playback));
+    return playback;
   }
 
   public Playback updatePlayback(@NonNull UUID refId,
@@ -61,40 +63,38 @@ public class PlaybackService {
             .setDuration(request.getDuration())
             .setSource(request.getSource())
         )
+        .map(playbackRepository::save)
+        .map(playbackMapper::fromEntity)
         .orElseThrow(() -> new PlaybackNotFound(refId));
 
-    return playbackMapper.fromEntity(
-        playbackRepository.save(playback)
-    );
+    eventPublisher.publishEvent(new PlaybackUpdated(this, playback));
+    return playback;
   }
 
-  public UUID deletePlayback(@NonNull UUID refId) {
-    return playbackRepository.delete(refId);
+  public UUID deletePlayback(@NonNull UUID id) {
+    var playbackId = playbackRepository.delete(id);
+
+    eventPublisher.publishEvent(new PlaybackDeleted(this, playbackId));
+    return playbackId;
   }
 
   public void disablePlayback(@NonNull UUID refId) {
     var playback = playbackRepository.findOne(refId)
         .map(existing -> existing.setEnabled(false))
+        .map(playbackRepository::save)
+        .map(playbackMapper::fromEntity)
         .orElseThrow(() -> new PlaybackNotFound(refId));
-    playbackRepository.save(playback);
+
+    eventPublisher.publishEvent(new PlaybackDisabled(this, playback));
   }
 
   public void enablePlayback(@NonNull UUID refId) {
     var playback = playbackRepository.findOne(refId)
         .map(existing -> existing.setEnabled(true))
+        .map(playbackRepository::save)
+        .map(playbackMapper::fromEntity)
         .orElseThrow(() -> new PlaybackNotFound(refId));
-    playbackRepository.save(playback);
-  }
 
-  public void startPlayback(@NonNull UUID refId) {
-    playbackRepository.findOne(refId)
-        .map(playbackMapper::fromEntity)
-        .ifPresent(playbackTaskManager::initiate);
-  }
-
-  public void stopPlayback(@NonNull UUID refId) {
-    playbackRepository.findOne(refId)
-        .map(playbackMapper::fromEntity)
-        .ifPresent(playbackTaskManager::cancel);
+    eventPublisher.publishEvent(new PlaybackEnabled(this, playback));
   }
 }

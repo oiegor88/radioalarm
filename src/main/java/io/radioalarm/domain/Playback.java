@@ -12,8 +12,8 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class Playback {
 
-  @JsonProperty(value = "ref_id")
-  private UUID refId;
+  @JsonProperty(value = "id")
+  private UUID id;
 
   @JsonProperty(value = "enabled")
   private Boolean enabled;

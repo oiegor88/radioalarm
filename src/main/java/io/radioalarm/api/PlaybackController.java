@@ -64,16 +64,4 @@ public class PlaybackController {
   public void enablePlayback(@PathVariable(name = "ref_id") UUID refId) {
     playbackService.enablePlayback(refId);
   }
-
-  @PatchMapping("/{ref_id}/start")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void startPlayback(@PathVariable(name = "ref_id") UUID refId) {
-    playbackService.startPlayback(refId);
-  }
-
-  @PatchMapping("/{ref_id}/stop")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void stopPlayback(@PathVariable(name = "ref_id") UUID refId) {
-    playbackService.stopPlayback(refId);
-  }
 }

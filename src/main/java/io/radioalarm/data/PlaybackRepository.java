@@ -22,18 +22,18 @@ public class PlaybackRepository {
 
   public Optional<PlaybackEntity> findOne(UUID refId) {
     return Optional.ofNullable(
-        nitriteRepository.find(where("refId").eq(refId)).firstOrNull()
+        nitriteRepository.find(where("id").eq(refId)).firstOrNull()
     );
   }
 
   public PlaybackEntity save(PlaybackEntity model) {
-    model.setRefId(UUID.randomUUID());
+    model.setId(UUID.randomUUID());
     nitriteRepository.insert(model);
     return model;
   }
 
-  public UUID delete(UUID refId) {
-    nitriteRepository.remove(where("refId").eq(refId));
-    return refId;
+  public UUID delete(UUID id) {
+    nitriteRepository.remove(where("id").eq(id));
+    return id;
   }
 }

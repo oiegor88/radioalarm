@@ -1,6 +1,6 @@
-package io.radioalarm.player;
+package io.radioalarm.scheduler;
 
-import java.util.Collection;
+import jakarta.annotation.PreDestroy;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -15,15 +15,16 @@ public class PlaybackTaskRegistry {
 
   private final Map<UUID, ScheduledFuture<?>> tasks = new ConcurrentHashMap<>();
 
+  @PreDestroy
+  public void destroy() {
+    tasks.values().forEach(task -> task.cancel(true));
+  }
+
   public void register(UUID key, ScheduledFuture<?> playbackFuture) {
     tasks.put(key, playbackFuture);
   }
 
   public Optional<ScheduledFuture<?>> getTask(UUID key) {
     return Optional.ofNullable(tasks.get(key));
-  }
-
-  public Collection<ScheduledFuture<?>> getTasks() {
-    return tasks.values();
   }
 }
