@@ -18,7 +18,7 @@ public class PersistenceConfiguration {
   }
 
   @Bean
-  public ObjectRepository<PlaybackEntity> playbackRepository(Nitrite nitrite) {
+  public ObjectRepository<PlaybackEntity> playbackObjectRepository(Nitrite nitrite) {
     return nitrite.getRepository(PlaybackEntity.class);
   }
 }
