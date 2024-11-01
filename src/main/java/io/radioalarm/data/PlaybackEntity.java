@@ -12,9 +12,12 @@ import java.util.UUID;
 
 @Data
 @Accessors(chain = true)
-@Index(fields = "id")
-@Entity(value = "playback")
+@Entity(PlaybackEntity.TABLE_NAME)
+@Index(fields = PlaybackEntity.FIELD_ID)
 public class PlaybackEntity {
+
+  public static final String TABLE_NAME = "playback";
+  public static final String FIELD_ID = "id";
 
   @Id
   private UUID id;
