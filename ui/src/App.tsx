@@ -1,26 +1,40 @@
-
 import PlaybackRecord from './components/PlaybackRecord.tsx'
-import PlaybackStatus from './utils/status.tsx'
+
+import {getPlaybacks} from "./services/playbackService.ts";
+import {useEffect, useState} from "react";
+import {Playback} from "./services/models.ts";
 
 function App() {
 
-  return (
-      <>
-          {/* Header */}
-          {/* Playback Create Form + Button */}
-          {/* Validation */}
-          {/* Error handling + bar */}
-          {/* Axios */}
-          {/* Record identification */}
-          {/* Table component */}
+  const [playbacks, setPlaybacks] = useState<Playback[]>();
 
-          <div className="py-10 px-40">
-              <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
-              <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
-              <PlaybackRecord name={'Radio Polska 24'} cron={'* 0 * * * *'} status={PlaybackStatus.ACTIVE}/>
-              <PlaybackRecord name={'Radio caprice'} cron={'* */2 * * * *'} status={PlaybackStatus.INACTIVE}/>
-          </div>
-      </>
+  useEffect(() => {
+    fetchPlaybacks();
+  }, []);
+
+  const fetchPlaybacks = async () => {
+    try {
+      setPlaybacks(await getPlaybacks());
+    } catch (error) {
+      console.error('Error fetching playbacks:', error);
+    }
+  };
+
+  return (
+    <div className="py-10 px-40">
+      {
+          playbacks && playbacks.map((item) => (
+              <PlaybackRecord
+                  id={item.id}
+                  name={item.name}
+                  cron={item.cron}
+                  enabled={item.enabled}
+                  source={item.source}
+                  duration={item.duration}
+              />
+          ))
+      }
+    </div>
   )
 }
 
