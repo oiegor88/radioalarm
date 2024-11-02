@@ -48,7 +48,7 @@ const PlaybackForm = () => {
   return (
       state === FormState.EXPANDED ? (
           <form onSubmit={handleSubmit(handleFormSubmit)} >
-            <div className={"flex items-center border-b border-b-gray-100"}>
+            <div className={"w-full flex justify-center items-center border-b border-b-gray-100"}>
               <div className="p-4">
                 <label className={"block"}>
                   Name:
@@ -98,15 +98,13 @@ const PlaybackForm = () => {
             </div>
           </form>
       ) : (
-          <div className={"flex items-right border-b border-b-gray-100"}>
-            <div className="p-4 w-2/12 ">
-              <div>
-                <Button type="button" label="New" color="bg-blue" onClick={handleFormExpand}/>
-              </div>
+          <div className={"px-40 flex justify-end border-b border-b-gray-100"}>
+            <div className="p-4 text-right">
+              <Button type="button" label="New" color="bg-blue" onClick={handleFormExpand}/>
             </div>
           </div>
       )
   )
 };
 
-export default PlaybackForm
+            export default PlaybackForm
