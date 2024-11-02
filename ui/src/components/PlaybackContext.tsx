@@ -12,12 +12,10 @@ export const PlaybackContext = createContext<{
   reloadPlaybacks: () => {}
 });
 
-
-export const PlaybackProvider=  ({ children }) => {
+export const PlaybackProvider = ({ children }) => {
   const [playbacks, setPlaybacks] = useState<Playback[]>([]);
 
   const addPlayback = (data: PlaybackCreateRequest) => {
-    console.log(data)
     createPlayback({
       name: data.name,
       source: data.source,
