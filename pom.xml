@@ -78,6 +78,11 @@
         </dependency>
         <dependency>
             <groupId>org.dizitart</groupId>
+            <artifactId>nitrite-mvstore-adapter</artifactId>
+            <version>${nitrite.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.dizitart</groupId>
             <artifactId>nitrite-jackson-mapper</artifactId>
             <version>${nitrite.version}</version>
         </dependency>
