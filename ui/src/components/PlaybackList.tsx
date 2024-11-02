@@ -1,32 +1,21 @@
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import '../index.css'
 
-import { Playback } from "../services/models";
-import {getPlaybacks, disablePlayback, enablePlayback, deletePlayback} from "../services/playbackService.ts";
+import { disablePlayback, enablePlayback, deletePlayback } from "../services/playbackService.ts";
 import PlaybackEntry from "./PlaybackEntry.tsx";
+import {PlaybackContext} from "./PlaybackContext.tsx";
 
 const PlaybackList = () => {
 
-    const [playbacks, setPlaybacks] = useState<Playback[]>();
-    const [dirty = true, setDirty] = useState<boolean>();
+    const { playbacks, reloadPlaybacks } = useContext(PlaybackContext);
 
     useEffect(() => {
-        dirty && fetchPlaybacks();
-    }, [dirty]);
-
-    const fetchPlaybacks = async () => {
-        try {
-            setPlaybacks(await getPlaybacks());
-            setDirty(false);
-        } catch (error) {
-            console.error('Error fetching playbacks:', error);
-        }
-    };
+        reloadPlaybacks();
+    }, []);
 
     const handleDisablePlayback = async (id: string) => {
         try {
-            await disablePlayback(id);
-            setDirty(true);
+            disablePlayback(id).then(() => reloadPlaybacks());
         } catch (error) {
             console.error('Error disabling playback:', error);
         }
@@ -34,8 +23,7 @@ const PlaybackList = () => {
 
     const handleEnablePlayback = async (id: string) => {
         try {
-            await enablePlayback(id);
-            setDirty(true);
+            enablePlayback(id).then(() => reloadPlaybacks());
         } catch (error) {
             console.error('Error enabling playback:', error);
         }
@@ -43,8 +31,7 @@ const PlaybackList = () => {
 
     const handleDeletePlayback = async (id: string) => {
         try {
-            await deletePlayback(id);
-            setDirty(true);
+            deletePlayback(id).then(() => reloadPlaybacks());
         } catch (error) {
             console.error('Error deleting playback:', error);
         }
@@ -55,6 +42,7 @@ const PlaybackList = () => {
             {
                 playbacks && playbacks.map((item) => (
                     <PlaybackEntry
+                        key={item.id}
                         data={item}
                         onDisable={handleDisablePlayback}
                         onEnable={handleEnablePlayback}

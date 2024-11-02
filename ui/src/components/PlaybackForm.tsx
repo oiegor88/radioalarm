@@ -1,9 +1,9 @@
-import {useState} from "react";
+import {useContext, useState} from "react";
 import '../index.css'
 
 import Button from "./Button.tsx";
 import { useForm } from 'react-hook-form';
-import { createPlayback } from "../services/playbackService.ts";
+import { PlaybackContext } from "./PlaybackContext.tsx";
 
 export enum FormState {
   COLLAPSED,
@@ -21,10 +21,11 @@ interface PlaybackFormData {
 const PlaybackForm = () => {
 
   const { register, handleSubmit, reset } = useForm<PlaybackFormData>();
+  const { addPlayback } = useContext(PlaybackContext);
   const [state = FormState.COLLAPSED, setState] = useState<FormState>();
 
   const handleFormSubmit = (data: PlaybackFormData) => {
-    createPlayback( {
+    addPlayback({
       name: data.name,
       source: data.source,
       cron: data.cron,
