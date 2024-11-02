@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import '../index.css'
 
 import { Playback } from "../services/models";
-import { getPlaybacks, disablePlayback, enablePlayback } from "../services/playbackService.ts";
+import {getPlaybacks, disablePlayback, enablePlayback, deletePlayback} from "../services/playbackService.ts";
 import PlaybackEntry from "./PlaybackEntry.tsx";
 
 const PlaybackList = () => {
@@ -28,7 +28,7 @@ const PlaybackList = () => {
             await disablePlayback(id);
             setDirty(true);
         } catch (error) {
-            console.error('Error fetching playbacks:', error);
+            console.error('Error disabling playback:', error);
         }
     };
 
@@ -37,7 +37,16 @@ const PlaybackList = () => {
             await enablePlayback(id);
             setDirty(true);
         } catch (error) {
-            console.error('Error fetching playbacks:', error);
+            console.error('Error enabling playback:', error);
+        }
+    };
+
+    const handleDeletePlayback = async (id: string) => {
+        try {
+            await deletePlayback(id);
+            setDirty(true);
+        } catch (error) {
+            console.error('Error deleting playback:', error);
         }
     };
 
@@ -46,14 +55,10 @@ const PlaybackList = () => {
             {
                 playbacks && playbacks.map((item) => (
                     <PlaybackEntry
-                        id={item.id}
-                        name={item.name}
-                        cron={item.cron}
-                        enabled={item.enabled}
-                        source={item.source}
-                        duration={item.duration}
+                        data={item}
                         onDisable={handleDisablePlayback}
                         onEnable={handleEnablePlayback}
+                        onDelete={handleDeletePlayback}
                     />
                 ))
             }
