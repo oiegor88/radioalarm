@@ -1,10 +1,6 @@
 server:
   port: 7070
 
-spring:
-  application:
-    name: 'Radio Alarm'
-
 nitrite:
   database:
     file: 'radioalarm.db'
