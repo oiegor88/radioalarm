@@ -12,6 +12,7 @@ export const PlaybackContext = createContext<{
   reloadPlaybacks: () => {}
 });
 
+// @ts-ignore
 export const PlaybackProvider = ({ children }) => {
   const [playbacks, setPlaybacks] = useState<Playback[]>([]);
 

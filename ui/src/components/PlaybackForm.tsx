@@ -35,12 +35,12 @@ const PlaybackForm = () => {
     reset();
   };
 
-  const handleFormDiscard = () => {
+  const handleFormDiscard = async () => {
     setState(FormState.COLLAPSED);
     reset();
   };
 
-  const handleFormExpand = () => {
+  const handleFormExpand = async () => {
     setState(FormState.EXPANDED);
     reset();
   };

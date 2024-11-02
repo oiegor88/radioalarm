@@ -8,9 +8,9 @@ import {Playback} from "../services/models.ts";
 
 interface PlaybackEntryProps {
   data: Playback,
-  onDisable?: (id: string) => Promise<void>,
-  onEnable?: (id: string) => Promise<void>,
-  onDelete?: (id: string) => Promise<void>,
+  onDisable: (id: string) => Promise<void>,
+  onEnable: (id: string) => Promise<void>,
+  onDelete: (id: string) => Promise<void>,
 }
 
 const PlaybackEntry: React.FC<PlaybackEntryProps> = ({data, onDisable, onEnable, onDelete}) => {

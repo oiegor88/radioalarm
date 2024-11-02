@@ -1,12 +1,12 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
-import { resolve } from "path";
+import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@images': resolve(__dirname, 'src/assets/images'), // Define the alias for the images folder
+      '@images': path.resolve(__dirname, 'src/assets/images'), // Define the alias for the images folder
     },
   },
 });
