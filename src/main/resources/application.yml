@@ -4,3 +4,13 @@ server:
 spring:
   application:
     name: 'Radio Alarm'
+
+nitrite:
+  database:
+    file: 'radioalarm.db'
+
+cors:
+  allowed-origins: '*'
+  allowed-methods: '*'
+  allowed-headers: '*'
+  allow-credentials: false
