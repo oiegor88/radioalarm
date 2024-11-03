@@ -1,5 +1,12 @@
 server:
+  address: '0.0.0.0'
   port: 7070
+  ssl:
+    enabled: true
+    keyStoreType: PKCS12
+    keyStore: 'ssl/keystore.p12'
+    keyStorePassword: 'changeit'
+    keyAlias: 'radioalarm'
 
 nitrite:
   database:
