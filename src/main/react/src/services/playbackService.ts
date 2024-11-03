@@ -1,6 +1,6 @@
 
 import { AxiosResponse } from 'axios';
-import {Playback, PlaybackCreateRequest} from './models';
+import {Playback, PlaybackCreateRequest} from './apiModels';
 import { apiClient } from './apiClient'
 
 export const getPlaybacks = async (): Promise<Playback[]> => {

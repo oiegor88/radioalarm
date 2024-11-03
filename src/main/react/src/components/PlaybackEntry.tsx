@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import PlaybackStatusIcon from "./PlaybackStatusIcon.tsx";
 import Button from "./Button.tsx";
-import {Playback} from "../services/models.ts";
+import {Playback} from "../services/apiModels";
 
 interface PlaybackEntryProps {
   data: Playback,

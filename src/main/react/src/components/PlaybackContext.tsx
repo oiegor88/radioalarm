@@ -1,6 +1,6 @@
 import {createContext, useState} from "react";
-import {Playback, PlaybackCreateRequest} from "../services/models.ts";
-import { getPlaybacks, createPlayback } from "../services/playbackService.ts";
+import {Playback, PlaybackCreateRequest} from "../services/apiModels";
+import { getPlaybacks, createPlayback } from "../services/playbackService";
 
 export const PlaybackContext = createContext<{
   playbacks: Playback[];
