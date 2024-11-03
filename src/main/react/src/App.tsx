@@ -1,13 +1,13 @@
 
 import PlaybackList from './components/PlaybackList.tsx';
-import PlaybackForm from './components/PlaybackForm.tsx';
 import {PlaybackProvider} from './context/PlaybackContext.tsx';
+import PlaybackToolbar from './components/PlaybackToolbar.tsx';
 
 function App() {
 
   return (
       <PlaybackProvider>
-        <PlaybackForm/>
+        <PlaybackToolbar/>
         <PlaybackList/>
       </PlaybackProvider>
   )

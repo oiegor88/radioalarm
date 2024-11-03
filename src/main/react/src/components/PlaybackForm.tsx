@@ -1,14 +1,9 @@
-import {useContext, useState} from 'react';
+import {useContext} from 'react';
 import '../index.css'
 
-import Button from './Button.tsx';
 import { useForm } from 'react-hook-form';
 import { PlaybackContext } from '../context/PlaybackContext.tsx';
-
-export enum FormState {
-  COLLAPSED,
-  EXPANDED
-}
+import {Box, Button, TextField} from "@mui/material";
 
 interface PlaybackFormData {
     name: string,
@@ -22,7 +17,6 @@ const PlaybackForm = () => {
 
   const { register, handleSubmit, reset } = useForm<PlaybackFormData>();
   const { addPlayback } = useContext(PlaybackContext);
-  const [state = FormState.COLLAPSED, setState] = useState<FormState>();
 
   const handleFormSubmit = (data: PlaybackFormData) => {
     addPlayback({
@@ -32,79 +26,68 @@ const PlaybackForm = () => {
       enabled: data.enabled,
       duration: data.duration
     });
-    reset();
-  };
-
-  const handleFormDiscard = async () => {
-    setState(FormState.COLLAPSED);
-    reset();
-  };
-
-  const handleFormExpand = async () => {
-    setState(FormState.EXPANDED);
-    reset();
   };
 
   return (
-      state === FormState.EXPANDED ? (
-          <form onSubmit={handleSubmit(handleFormSubmit)} >
-            <div className={"w-full flex justify-center items-center border-b border-b-gray-100"}>
-              <div className="p-4">
-                <label className={"block"}>
-                  Name:
-                  <input className={"bg-gray-50 border border-gray-300"}
-                         type="text"
-                         {...register("name")}/>
-                </label>
-              </div>
-              <div className="p-4">
-                <label className={"block"}>
-                  Source:
-                  <input className={"bg-gray-50 border border-gray-300"}
-                         type="url"
-                         {...register("source")}/>
-                </label>
-              </div>
-              <div className="p-4">
-                <label className={"block"}>
-                  Cron:
-                  <input className={"bg-gray-50 border border-gray-300"}
-                         type="text"
-                         {...register("cron")}/>
-                </label>
-              </div>
-              <div className="p-4">
-                <label className={"block"}>
-                  Duration:
-                  <input className={"bg-gray-50 border border-gray-300"}
-                         type="text"
-                         {...register("duration")}/>
-                </label>
-              </div>
-              <div className="p-4">
-                <label className={"block"}>
-                  Enabled:
-                  <input className={"bg-gray-50 border border-gray-300"}
-                         type="checkbox"
-                         {...register("enabled")}/>
-                </label>
-              </div>
-              <div className="p-4">
-                <div>
-                  <Button type="submit" color="bg-green" label="Submit"/>
-                  <Button type="button" color="bg-red" label="Discard" onClick={handleFormDiscard}/>
-                </div>
-              </div>
-            </div>
-          </form>
-      ) : (
-          <div className={"px-40 flex justify-end border-b border-b-gray-100"}>
-            <div className="p-4 text-right">
-              <Button type="button" label="New" color="bg-blue" onClick={handleFormExpand}/>
-            </div>
-          </div>
-      )
+      <Box
+          component="form"
+          onSubmit={() => { handleSubmit(handleFormSubmit); reset() }}
+          mx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 10,
+            width: '50rem',
+            margin: '0 auto',
+            mt: 5
+          }}>
+
+        <TextField
+            label="Name"
+            helperText="Arbitrary playback name"
+            variant="outlined"
+            required
+            {...register("name")}
+        />
+
+        <TextField
+            label="Source"
+            helperText="Playback source URL"
+            variant="outlined"
+            required
+            {...register("source")}
+        />
+
+        <TextField
+            label="Playback scheludle"
+            helperText="Example: 0 30 06 * * *"
+            variant="outlined"
+            required
+            {...register("cron")}
+        />
+
+        <TextField
+            label="Playback duration"
+            helperText="Example: PT5m"
+            variant="outlined"
+            required
+            {...register("duration")}
+        />
+
+        <TextField
+            label="Enabled"
+            helperText="Disabled playbacks won't play"
+            variant="outlined"
+            required
+            {...register("enabled")}
+        />
+
+        <Button variant="contained" color="primary" type="submit">
+          Submit
+        </Button>
+      </Box>
+
+
   )
 };
 
-            export default PlaybackForm
+export default PlaybackForm
