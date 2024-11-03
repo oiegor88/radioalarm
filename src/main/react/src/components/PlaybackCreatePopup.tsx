@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import {Dialog, DialogTitle, DialogContent, DialogActions, Button, Box, TextField, InputAdornment } from '@mui/material';
-import { AlarmAdd } from '@mui/icons-material';
+import { AlarmAdd, EventRepeat, Link, Timelapse } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { PlaybackContext } from '../context/PlaybackContext.tsx';
 
@@ -80,7 +80,7 @@ const PlaybackCreatePopup = () => {
                     input: {
                       startAdornment: (
                           <InputAdornment position="start">
-                            <AlarmAdd />
+                            <Link />
                           </InputAdornment>
                       ),
                     },
@@ -97,7 +97,7 @@ const PlaybackCreatePopup = () => {
                     input: {
                       startAdornment: (
                           <InputAdornment position="start">
-                            <AlarmAdd />
+                            <EventRepeat />
                           </InputAdornment>
                       ),
                     },
@@ -114,7 +114,7 @@ const PlaybackCreatePopup = () => {
                     input: {
                       startAdornment: (
                           <InputAdornment position="start">
-                            <AlarmAdd />
+                            <Timelapse />
                           </InputAdornment>
                       ),
                     },

@@ -21,7 +21,6 @@ export const PlaybackProvider = ({ children }) => {
       name: data.name,
       source: data.source,
       cron: data.cron,
-      enabled: data.enabled,
       duration: data.duration
     }).then(() => reloadPlaybacks())
   };
