@@ -5,6 +5,7 @@ import '../index.css'
 import { disablePlayback, enablePlayback, deletePlayback } from "../services/playbackService.ts";
 import PlaybackEntry from "./PlaybackEntry.tsx";
 import {PlaybackContext} from "../context/PlaybackContext.tsx";
+import {Typography} from "@mui/material";
 
 const PlaybackList = () => {
 
@@ -41,16 +42,21 @@ const PlaybackList = () => {
     return (
         <div className="py-10 px-40">
             {
-                playbacks && playbacks.map((item) => (
-                    <PlaybackEntry
-                        key={item.id}
-                        data={item}
-                        onDisable={handleDisablePlayback}
-                        onEnable={handleEnablePlayback}
-                        onDelete={handleDeletePlayback}
-                    />
-                ))
+                playbacks?.length > 0 ?
+                    playbacks.map((item) => (
+                        <PlaybackEntry
+                            key={item.id}
+                            data={item}
+                            onDisable={handleDisablePlayback}
+                            onEnable={handleEnablePlayback}
+                            onDelete={handleDeletePlayback}
+                        />
+                    )) :
+                    <Typography textAlign='center' color='grey'>
+                        No playbacks yet
+                    </Typography>
             }
+
         </div>
     );
 }

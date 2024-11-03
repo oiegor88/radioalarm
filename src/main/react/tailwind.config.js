@@ -7,9 +7,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-        fontFamily: {
-            sans: ['Fira Sans', 'sans-serif'],
-        },
         colors: {
             red: "#dc2626",
             grey: "#94a3b8",

@@ -11,6 +11,7 @@
     "tailwind": "npx tailwindcss -i ./src/tailwind.css -o ./src/index.css --watch"
   },
   "dependencies": {
+    "@mui/icons-material": "^6.1.6",
     "react-hook-form": "^7.53.1"
   },
   "devDependencies": {

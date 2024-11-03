@@ -1,10 +1,8 @@
 import React from "react";
 import '../index.css'
-import classNames from 'classnames';
-
-import PlaybackStatusIcon from "./PlaybackStatusIcon.tsx";
-import Button from "./Button.tsx";
-import {Playback} from "../services/apiModels";
+import { Playback } from '../services/apiModels';
+import { Box, Button, Typography } from '@mui/material';
+import { AlarmOff, AlarmOn } from '@mui/icons-material';
 
 interface PlaybackEntryProps {
   data: Playback,
@@ -16,27 +14,66 @@ interface PlaybackEntryProps {
 const PlaybackEntry: React.FC<PlaybackEntryProps> = ({data, onDisable, onEnable, onDelete}) => {
 
   return (
-      <div className={classNames("flex flex-row items-center border-b border-b-gray-100", {
-        'bg-gray-100 text-gray-500': !data.enabled,
-        'bg-white': data.enabled
-      })}>
-        <div className="p-4 w-1/12">
-          <PlaybackStatusIcon enabled={data.enabled}/>
-        </div>
-        <div className="p-4 w-5/12">
-          <h1>{data.name}</h1>
-        </div>
-        <div className="p-4 w-4/12">
-          <p>Schedule: {data.cron}</p>
-        </div>
-        <div className="p-4 w-2/12 ">
-          <div>
-            {data.enabled && <Button type="button" label="Disable" color="bg-grey" onClick={() => onDisable(data.id)}/>}
-            {!data.enabled && <Button type="button" label="Enable" color="bg-blue" onClick={() => onEnable(data.id)}/>}
-            <Button type="button" label="Delete" color="bg-red" onClick={() => onDelete(data.id)}/>
-          </div>
-        </div>
-      </div>
+      <Box className={data.enabled ? "bg-gray-50" : "bg-gray-200 opacity-75"}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'start',
+            padding: 2,
+            gap: 2,
+            borderBottom: '1px solid #ddd',
+            width: '100%',
+            maxWidth: '50rem',
+            margin: '0 auto',
+          }}
+      >
+
+        {data.enabled ? <AlarmOn/> : <AlarmOff/>}
+
+        <Typography
+            variant="body1"
+            color="text.primary"
+            sx={{ width: '30rem' }}>
+          {data.name}
+        </Typography>
+
+        <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ width: '10rem' }}>
+          {data.cron}
+        </Typography>
+
+        <Box sx={{ display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'end',
+          gap: 1,
+          width: '100%',
+           }}>
+          {data.enabled ?
+              <Button
+                  variant="contained"
+                  color="warning"
+                  size="small"
+                  onClick={() => onDisable(data.id)}>
+                Disable
+              </Button> :
+              <Button
+                  variant="contained"
+                  color="primary"
+                  size="small"
+                  onClick={() => onEnable(data.id)}>
+                Enable
+              </Button>
+          }
+
+          <Button
+              variant="contained"
+              color="error"
+              size="small"
+              onClick={() => onDelete(data.id)}> Delete </Button>
+        </Box>
+      </Box>
   )
 };
 

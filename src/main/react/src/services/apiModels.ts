@@ -12,6 +12,5 @@ export interface PlaybackCreateRequest {
   name: string,
   source: string,
   cron: string,
-  duration: string,
-  enabled: boolean
+  duration: string
 }
