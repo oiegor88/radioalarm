@@ -4,7 +4,7 @@ import '../index.css'
 
 import { disablePlayback, enablePlayback, deletePlayback } from "../services/playbackService.ts";
 import PlaybackEntry from "./PlaybackEntry.tsx";
-import {PlaybackContext} from "./PlaybackContext.tsx";
+import {PlaybackContext} from "../context/PlaybackContext.tsx";
 
 const PlaybackList = () => {
 

@@ -1,9 +1,9 @@
-import {useContext, useState} from "react";
+import {useContext, useState} from 'react';
 import '../index.css'
 
-import Button from "./Button.tsx";
+import Button from './Button.tsx';
 import { useForm } from 'react-hook-form';
-import { PlaybackContext } from "./PlaybackContext.tsx";
+import { PlaybackContext } from '../context/PlaybackContext.tsx';
 
 export enum FormState {
   COLLAPSED,
