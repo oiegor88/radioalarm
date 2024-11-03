@@ -29,7 +29,6 @@ function ssl() {
   IP_ADDRESS=$(hostname -I)
 
   mkdir -p "$SSL_DIR"
-  rm -r "${SSL_DIR:?}/"
 
   keytool -genkeypair \
     -alias radioalarm \
