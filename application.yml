@@ -10,7 +10,7 @@ server:
 
 nitrite:
   database:
-    file: 'radioalarm.db'
+    file: '/tmp/radioalarm.db'
 
 cors:
   allowed-origins: '*'

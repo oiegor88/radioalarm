@@ -26,8 +26,11 @@ function dev() {
 
 function ssl() {
   KEYSTORE_PASS="changeit"
+  IP_ADDRESS=$(hostname -I)
 
   mkdir -p "$SSL_DIR"
+  rm -r "${SSL_DIR:?}/"
+
   keytool -genkeypair \
     -alias radioalarm \
     -keyalg RSA \
@@ -35,7 +38,7 @@ function ssl() {
     -storetype PKCS12 \
     -storepass "$KEYSTORE_PASS" \
     -keystore "$SSL_DIR/keystore.p12" \
-    -dname "CN=admin, OU=, O=, L=, S=, C=" \
+    -dname "CN=$IP_ADDRESS, OU=dev, O=dev, L=dev, S=dev, C=uk" \
     -validity 365
 }
 
