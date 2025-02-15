@@ -1,8 +1,19 @@
-radio:
-  playback:
-    scheduled:
-      - name: "Radio Polska 24"
-        source: 'http://mp3.polskieradio.pl:8080/'
-        cron: '0 08 16 * * *'
-        duration: 'PT20m'
-        enabled: true
+server:
+  address: '0.0.0.0'
+  port: 7070
+  ssl:
+    enabled: true
+    keyStoreType: PKCS12
+    keyStore: 'ssl/keystore.p12'
+    keyStorePassword: 'changeit'
+    keyAlias: 'radioalarm'
+
+nitrite:
+  database:
+    file: '/tmp/radioalarm.db'
+
+cors:
+  allowed-origins: '*'
+  allowed-methods: '*'
+  allowed-headers: '*'
+  allow-credentials: false

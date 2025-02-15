@@ -1,0 +1,12 @@
+server:
+  port: 7070
+
+nitrite:
+  database:
+    file: 'radioalarm.db'
+
+cors:
+  allowed-origins: '*'
+  allowed-methods: '*'
+  allowed-headers: '*'
+  allow-credentials: false

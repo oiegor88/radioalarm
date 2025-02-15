@@ -5,6 +5,7 @@ APP_NAME="radioalarm"
 CONFIG_FILE="application.yml"
 START_SCRIPT_FILE="start.sh"
 STOP_SCRIPT_FILE="stop.sh"
+SSL_DIR="ssl"
 SERVICE_NAME="radioalarm.service"
 JDK_ALIAS="22.0.2-zulu"
 MVN_ALIAS="3.9.9"
@@ -22,6 +23,24 @@ function dev() {
     sdk install java "$JDK_ALIAS"
     sdk install maven "$MVN_ALIAS"
 }
+
+function ssl() {
+  KEYSTORE_PASS="changeit"
+  IP_ADDRESS=$(hostname -I)
+
+  mkdir -p "$SSL_DIR"
+
+  keytool -genkeypair \
+    -alias radioalarm \
+    -keyalg RSA \
+    -keysize 2048 \
+    -storetype PKCS12 \
+    -storepass "$KEYSTORE_PASS" \
+    -keystore "$SSL_DIR/keystore.p12" \
+    -dname "CN=$IP_ADDRESS, OU=dev, O=dev, L=dev, S=dev, C=uk" \
+    -validity 365
+}
+
 
 function build() {
     echo "Building the project..."
@@ -43,6 +62,7 @@ function deploy() {
     # Copy stuff to /opt
     sudo mkdir -p "$DEPLOYMENT_DIR"
     sudo cp -rf "./$CONFIG_FILE" "$DEPLOYMENT_DIR/$CONFIG_FILE"
+    sudo cp -rf "./$SSL_DIR" "$DEPLOYMENT_DIR/$SSL_DIR"
     sudo cp -rf "./target/$APP_NAME.jar" "$DEPLOYMENT_DIR/$APP_NAME.jar"
     
     # Create scripts
@@ -100,6 +120,9 @@ for arg in "$@"; do
         dev)
             dev
             ;;
+        ssl)
+            ssl
+            ;;
         build)
             build
             ;;
@@ -117,12 +140,12 @@ for arg in "$@"; do
             ;;            
         *)
             echo "Unknown option: $arg"
-            echo "Usage: $0 [dev] [build] [deploy] [start] [stop] [logs]"
+            echo "Usage: $0 [dev] [ssl] [build] [deploy] [start] [stop] [logs]"
             exit 1
             ;;
     esac
 done
 
 if [ $# -eq 0 ]; then
-    echo "Usage: $0 [dev] [build] [deploy] [stop] [start] [logs]"
+    echo "Usage: $0 [dev] [ssl] [build] [deploy] [stop] [start] [logs]"
 fi
